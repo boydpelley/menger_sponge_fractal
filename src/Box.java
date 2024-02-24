@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Box {
     Vector3D pos;
     float r;
@@ -33,6 +35,22 @@ public class Box {
 
     public int[][] getCubeEdges() {
         return cubeEdges;
+    }
+
+    public ArrayList<Box> generate() {
+        ArrayList<Box> boxes = new ArrayList<>();
+
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                for (int z = -1; z < 2; z++) {
+                    float newR = r / 3;
+                    Box b = new Box(pos.getX() + x * newR, pos.getY() + y * newR, pos.getZ() + z * newR, newR);
+                    boxes.add(b);
+                }
+            }
+        }
+
+        return boxes;
     }
 
     public void rotateCube() {
