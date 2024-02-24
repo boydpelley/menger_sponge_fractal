@@ -4,8 +4,8 @@ public class Box {
     Vector3D pos;
     float r;
 
-    private final double angleX = 0.02;
-    private final double angleY = 0.02;
+    private double angleX = 0.02;
+    private double angleY = 0.02;
 
     Box(float x, float y, float z, float r) {
         pos = new Vector3D(x, y, z);
@@ -28,28 +28,23 @@ public class Box {
         return boxes;
     }
 
-    public void rotateCube(float translateX, float translateY, float translateZ) {
+    public void rotateCube() {
+        // Rotate the box around X-axis
         double cosX = Math.cos(angleX);
         double sinX = Math.sin(angleX);
+        float rotatedY = (float) (pos.getY() * cosX - pos.getZ() * sinX);
+        float rotatedZ = (float) (pos.getY() * sinX + pos.getZ() * cosX);
+
+        // Rotate the box around Y-axis
         double cosY = Math.cos(angleY);
         double sinY = Math.sin(angleY);
+        float rotatedX = (float) (pos.getX() * cosY + rotatedZ * sinY);
+        float rotatedZFinal = (float) (-pos.getX() * sinY + rotatedZ * cosY);
 
-            // Translate the box position to the origin
-        float translatedX = pos.getX() - translateX;
-        float translatedY = pos.getY() - translateY;
-        float translatedZ = pos.getZ() - translateZ;
-
-        // Rotate around X-axis
-        float rotatedY = (float) (translatedY * cosX - translatedZ * sinX);
-        float rotatedZ = (float) (translatedY * sinX + translatedZ * cosX);
-
-        // Rotate around Y-axis
-        float finalX = (float) (translatedX * cosY + rotatedZ * sinY);
-        float finalZ = (float) (-translatedX * sinY + rotatedZ * cosY);
-
-        // Translate back to the original position
-        pos.setX(finalX + translateX);
-        pos.setY(rotatedY + translateY);
-        pos.setZ(finalZ + translateZ);
+        // Update the box position
+        pos.setX(rotatedX);
+        pos.setY(rotatedY);
+        pos.setZ(rotatedZFinal);
     }
 }
+

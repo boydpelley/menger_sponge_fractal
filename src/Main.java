@@ -14,14 +14,14 @@ public class Main extends JFrame {
 
         sponge = new ArrayList<>();
 
-        b = new Box(0, 0, 0, 100);
+        b = new Box(0, 0, 0, 200);
         sponge.add(b);
 
         Timer timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (Box b : sponge) {
-                    b.rotateCube(b.pos.getX(), b.pos.getY(), b.pos.getZ());
+                    b.rotateCube();
                 }
                 repaint();
             }
@@ -52,14 +52,24 @@ public class Main extends JFrame {
             float y = box.pos.getY();
             float z = box.pos.getZ();
 
-            // Adjust the coordinates based on the perspective
             int drawX = (int) (centerX + x);
             int drawY = (int) (centerY - y);
 
-            // Draw the cube using 3D coordinates
+            int depth = (int) z;
+
             int size = (int) box.r;
-            g2d.drawRect(drawX, drawY, size, size);
+
+            // Draw a filled cube
+            drawCube(g2d, drawX - depth, drawY - depth, size, size, depth);
         }
+    }
+
+    private void drawCube(Graphics2D g2d, int x, int y, int width, int height, int depth) {
+        g2d.drawRect(x, y, width, height);
+        g2d.drawLine(x, y, x - depth, y - depth);
+        g2d.drawLine(x + width, y, x + width - depth, y - depth);
+        g2d.drawLine(x, y + height, x - depth, y + height - depth);
+        g2d.drawLine(x + width, y + height, x + width - depth, y + height - depth);
     }
 
     void onClick() {
