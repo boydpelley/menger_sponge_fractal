@@ -1,26 +1,40 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Main extends JFrame {
 
-    Box b = new Box(0, 0, 0, 200);
-
+    private ArrayList<Box> sponge;
+    Box b;
     public Main() {
         setTitle("Rotating cube");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        sponge = new ArrayList<>();
+
+        b = new Box(0, 0, 0, 100);
+        sponge.add(b);
+
         Timer timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                b.rotateCube();
+                for (Box b : sponge) {
+                    b.rotateCube(b.pos.getX(), b.pos.getY(), b.pos.getZ());
+                }
                 repaint();
             }
         });
         timer.start();
 
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onClick();
+                repaint();
+            }
+        });
     }
 
     @Override
@@ -32,18 +46,25 @@ public class Main extends JFrame {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLACK);
+        // need to add code here
+        for (Box box : sponge) {
+            float x = box.pos.getX();
+            float y = box.pos.getY();
+            float z = box.pos.getZ();
 
-        double [][] cubeVertices = b.getCubeVertices();
-        int [][] cubeEdges = b.getCubeEdges();
+            // Adjust the coordinates based on the perspective
+            int drawX = (int) (centerX + x);
+            int drawY = (int) (centerY - y);
 
-        for (int[] edge : cubeEdges) {
-            int x1 = (int) (centerX + cubeVertices[edge[0]][0] * 50);
-            int y1 = (int) (centerY - cubeVertices[edge[0]][1] * 50);
-            int x2 = (int) (centerX + cubeVertices[edge[1]][0] * 50);
-            int y2 = (int) (centerY - cubeVertices[edge[1]][1] * 50);
-
-            g2d.drawLine(x1, y1, x2, y2);
+            // Draw the cube using 3D coordinates
+            int size = (int) box.r;
+            g2d.drawRect(drawX, drawY, size, size);
         }
+    }
+
+    void onClick() {
+        ArrayList<Box> next = sponge.get(0).generate();
+        sponge = next;
     }
 
     public static void main(String[] args) {
