@@ -5,25 +5,7 @@ import java.awt.event.ActionListener;
 
 public class Main extends JFrame {
 
-    private double[][] cubeVertices = {
-            {-1, -1, -1},
-            {-1, -1, 1},
-            {-1, 1, -1},
-            {-1, 1, 1},
-            {1, -1, -1},
-            {1, -1, 1},
-            {1, 1, -1},
-            {1, 1, 1}
-    };
-
-    private int[][] cubeEdges = {
-            {0, 1}, {1, 3}, {3, 2}, {2, 0},
-            {4, 5}, {5, 7}, {7, 6}, {6, 4},
-            {0, 4}, {1, 5}, {2, 6}, {3, 7}
-    };
-
-    private double angleX = 0.02;
-    private double angleY = 0.02;
+    Box b = new Box(0, 0, 0, 200);
 
     public Main() {
         setTitle("Rotating cube");
@@ -33,34 +15,12 @@ public class Main extends JFrame {
         Timer timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rotateCube();
+                b.rotateCube();
                 repaint();
             }
         });
         timer.start();
 
-    }
-
-    private void rotateCube() {
-        double cosX = Math.cos(angleX);
-        double sinX = Math.sin(angleX);
-        double cosY = Math.cos(angleY);
-        double sinY = Math.sin(angleY);
-
-        for (int i = 0; i < cubeVertices.length; i++) {
-            double x = cubeVertices[i][0];
-            double y = cubeVertices[i][1];
-            double z = cubeVertices[i][2];
-
-
-            cubeVertices[i][0] = x * cosY - z * sinY;
-            cubeVertices[i][2] = z * cosY + x * sinY;
-
-            z = cubeVertices[i][2];
-
-            cubeVertices[i][1] = y * cosX - z * sinX;
-            cubeVertices[i][2] = z * cosX + y * sinX;
-        }
     }
 
     @Override
@@ -72,6 +32,9 @@ public class Main extends JFrame {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLACK);
+
+        double [][] cubeVertices = b.getCubeVertices();
+        int [][] cubeEdges = b.getCubeEdges();
 
         for (int[] edge : cubeEdges) {
             int x1 = (int) (centerX + cubeVertices[edge[0]][0] * 50);
