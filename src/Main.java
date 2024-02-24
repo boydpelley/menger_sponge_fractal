@@ -52,10 +52,12 @@ public class Main extends JFrame {
             double y = cubeVertices[i][1];
             double z = cubeVertices[i][2];
 
+
             cubeVertices[i][0] = x * cosY - z * sinY;
             cubeVertices[i][2] = z * cosY + x * sinY;
 
             z = cubeVertices[i][2];
+
             cubeVertices[i][1] = y * cosX - z * sinX;
             cubeVertices[i][2] = z * cosX + y * sinX;
         }
