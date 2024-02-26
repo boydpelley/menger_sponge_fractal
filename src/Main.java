@@ -14,7 +14,7 @@ public class Main extends JFrame {
 
         sponge = new ArrayList<>();
 
-        b = new Box(0, 0, 0, 200);
+        b = new Box(0, 0, 0, 100);
         sponge.add(b);
 
         Timer timer = new Timer(16, new ActionListener() {
@@ -46,8 +46,15 @@ public class Main extends JFrame {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLACK);
-        // need to add code here
+
+        // Draw the Menger Sponge
         for (Box box : sponge) {
+            drawMengerSponge(g2d, centerX, centerY, box);
+        }
+    }
+
+    private void drawMengerSponge(Graphics2D g2d, int centerX, int centerY, Box box) {
+        if (box.r < 2) {
             float x = box.pos.getX();
             float y = box.pos.getY();
             float z = box.pos.getZ();
@@ -61,6 +68,12 @@ public class Main extends JFrame {
 
             // Draw a filled cube
             drawCube(g2d, drawX - depth, drawY - depth, size, size, depth);
+        } else {
+            // Recursively draw the smaller boxes
+            ArrayList<Box> children = box.generate();
+            for (Box child : children) {
+                drawMengerSponge(g2d, centerX, centerY, child);
+            }
         }
     }
 
@@ -73,7 +86,10 @@ public class Main extends JFrame {
     }
 
     void onClick() {
-        ArrayList<Box> next = sponge.get(0).generate();
+        ArrayList<Box> next = new ArrayList<>();
+        for (Box b : sponge) {
+            next.addAll(b.generate());
+        }
         sponge = next;
     }
 

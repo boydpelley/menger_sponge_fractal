@@ -32,8 +32,8 @@ public class Box {
         // Rotate the box around X-axis
         double cosX = Math.cos(angleX);
         double sinX = Math.sin(angleX);
-        float rotatedY = (float) (pos.getY() * cosX - pos.getZ() * sinX);
-        float rotatedZ = (float) (pos.getY() * sinX + pos.getZ() * cosX);
+        float rotatedY = (float) (pos.getY() * cosX + pos.getZ() * sinX);
+        float rotatedZ = (float) (-pos.getY() * sinX + pos.getZ() * cosX);
 
         // Rotate the box around Y-axis
         double cosY = Math.cos(angleY);
