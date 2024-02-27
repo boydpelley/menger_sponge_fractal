@@ -40,20 +40,35 @@ public class FractalPanel extends JPanel {
     }
 
     private void drawBox(Graphics2D g2d, Box box) {
-        float[] vertices = box.getVertices();
+        float[] rotatedVertices = box.getVertices();
+
         int[][] edges = {
                 {0, 1}, {1, 2}, {2, 3}, {3, 0},
                 {4, 5}, {5, 6}, {6, 7}, {7, 4},
                 {0, 4}, {1, 5}, {2, 6}, {3, 7}
         };
 
-        for (int[] edge : edges) {
-            int x1 = Math.round(vertices[edge[0] * 3]);
-            int y1 = Math.round(vertices[edge[0] * 3 + 1]);
-            int x2 = Math.round(vertices[edge[1] * 3]);
-            int y2 = Math.round(vertices[edge[1] * 3 + 1]);
+        float distance = 500; // Distance from the camera to the screen
 
-            g2d.drawLine(x1 + getWidth() / 2, getHeight() / 2 - y1, x2 + getWidth() / 2, getHeight() / 2 - y2);
+        for (int[] edge : edges) {
+            float x1 = rotatedVertices[edge[0] * 3];
+            float y1 = rotatedVertices[edge[0] * 3 + 1];
+            float z1 = rotatedVertices[edge[0] * 3 + 2];
+
+            float x2 = rotatedVertices[edge[1] * 3];
+            float y2 = rotatedVertices[edge[1] * 3 + 1];
+            float z2 = rotatedVertices[edge[1] * 3 + 2];
+
+            // Perspective projection
+            float scaleFactor = distance / (distance + z1);
+            int screenX1 = Math.round(x1 * scaleFactor) + getWidth() / 2;
+            int screenY1 = getHeight() / 2 - Math.round(y1 * scaleFactor);
+
+            scaleFactor = distance / (distance + z2);
+            int screenX2 = Math.round(x2 * scaleFactor) + getWidth() / 2;
+            int screenY2 = getHeight() / 2 - Math.round(y2 * scaleFactor);
+
+            g2d.drawLine(screenX1, screenY1, screenX2, screenY2);
         }
     }
 }

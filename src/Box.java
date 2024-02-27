@@ -48,13 +48,40 @@ public class Box {
     }
 
     public float[] getVertices() {
+        float halfSize = r / 2;
         float[] vertices = new float[24];
 
-        for (int i = 0; i < 8; i++) {
-            vertices[i * 3] = pos.getX();
-            vertices[i * 3 + 1] = pos.getY();
-            vertices[i * 3 + 2] = pos.getZ();
-        }
+        vertices[0] = pos.getX() - halfSize;
+        vertices[1] = pos.getY() - halfSize;
+        vertices[2] = pos.getZ() + halfSize;
+
+        vertices[3] = pos.getX() + halfSize;
+        vertices[4] = pos.getY() - halfSize;
+        vertices[5] = pos.getZ() + halfSize;
+
+        vertices[6] = pos.getX() + halfSize;
+        vertices[7] = pos.getY() + halfSize;
+        vertices[8] = pos.getZ() + halfSize;
+
+        vertices[9] = pos.getX() - halfSize;
+        vertices[10] = pos.getY() + halfSize;
+        vertices[11] = pos.getZ() + halfSize;
+
+        vertices[12] = pos.getX() - halfSize;
+        vertices[13] = pos.getY() - halfSize;
+        vertices[14] = pos.getZ() - halfSize;
+
+        vertices[15] = pos.getX() + halfSize;
+        vertices[16] = pos.getY() - halfSize;
+        vertices[17] = pos.getZ() - halfSize;
+
+        vertices[18] = pos.getX() + halfSize;
+        vertices[19] = pos.getY() + halfSize;
+        vertices[20] = pos.getZ() - halfSize;
+
+        vertices[21] = pos.getX() - halfSize;
+        vertices[22] = pos.getY() + halfSize;
+        vertices[23] = pos.getZ() - halfSize;
 
         return vertices;
     }
