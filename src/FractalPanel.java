@@ -51,10 +51,9 @@ public class FractalPanel extends JPanel {
             int x1 = Math.round(vertices[edge[0] * 3]);
             int y1 = Math.round(vertices[edge[0] * 3 + 1]);
             int x2 = Math.round(vertices[edge[1] * 3]);
-            int y2 = Math.round(vertices[edge[1] * 3] + 1);
+            int y2 = Math.round(vertices[edge[1] * 3 + 1]);
 
-            g2d.drawLine(x1 + getWidth() / 2, getHeight() / 2 - y1,
-                    x2 + getHeight() / 2, getHeight() / 2 - y2);
+            g2d.drawLine(x1 + getWidth() / 2, getHeight() / 2 - y1, x2 + getWidth() / 2, getHeight() / 2 - y2);
         }
     }
 }
