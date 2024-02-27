@@ -46,5 +46,17 @@ public class Box {
         pos.setY(rotatedY);
         pos.setZ(rotatedZFinal);
     }
+
+    public float[] getVertices() {
+        float[] vertices = new float[24];
+
+        for (int i = 0; i < 8; i++) {
+            vertices[i * 3] = pos.getX();
+            vertices[i * 3 + 1] = pos.getY();
+            vertices[i * 3 + 2] = pos.getZ();
+        }
+
+        return vertices;
+    }
 }
 
