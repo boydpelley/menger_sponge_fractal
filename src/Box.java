@@ -1,19 +1,15 @@
+import java.util.ArrayList;
+
 public class Box {
-    Vector3D pos;
-    float r;
+    private Vector3D pos;
+    private float r;
 
     private final double angleX = 0.02;
     private final double angleY = 0.02;
 
     private double[][] cubeVertices = {
-            {-1, -1, -1},
-            {-1, -1, 1},
-            {-1, 1, -1},
-            {-1, 1, 1},
-            {1, -1, -1},
-            {1, -1, 1},
-            {1, 1, -1},
-            {1, 1, 1}
+            {-1, -1, -1}, {-1, -1, 1}, {-1, 1, -1}, {-1, 1, 1},
+            {1, -1, -1}, {1, -1, 1}, {1, 1, -1}, {1, 1, 1}
     };
 
     private int[][] cubeEdges = {
@@ -46,7 +42,6 @@ public class Box {
             double y = cubeVertices[i][1];
             double z = cubeVertices[i][2];
 
-
             cubeVertices[i][0] = x * cosY - z * sinY;
             cubeVertices[i][2] = z * cosY + x * sinY;
 
@@ -57,6 +52,32 @@ public class Box {
         }
     }
 
+    public void generateMengerSponge(int level) {
+        ArrayList<double[]> newVertices = new ArrayList<>();
+        ArrayList<int[]> newEdges = new ArrayList<>();
 
+        for (int i = 0; i < cubeEdges.length; i++) {
+            divideEdge(cubeVertices[cubeEdges[i][0]], cubeVertices[cubeEdges[i][1]], level, newVertices, newEdges);
+        }
 
+        cubeVertices = newVertices.toArray(new double[0][0]);
+        cubeEdges = newEdges.toArray(new int[0][0]);
+    }
+
+    private void divideEdge(double[] p1, double[] p2, int level, ArrayList<double[]> vertices, ArrayList<int[]> edges) {
+        if (level == 0) {
+            int index1 = vertices.size();
+            vertices.add(p1.clone());
+            int index2 = vertices.size();
+            vertices.add(p2.clone());
+
+            int[] newEdge = {index1, index2};
+            edges.add(newEdge);
+        } else {
+            double[] midPoint = {(p1[0] + p2[0]) / 3, (p1[1] + p2[1]) / 3, (p1[2] + p2[2]) / 3};
+
+            divideEdge(p1, midPoint, level - 1, vertices, edges);
+            divideEdge(midPoint, p2, level - 1, vertices, edges);
+        }
+    }
 }

@@ -5,12 +5,15 @@ import java.awt.event.ActionListener;
 
 public class Main extends JFrame {
 
-    Box b = new Box(0, 0, 0, 200);
+    private Box b;
+    private int level = 0; // Initial level of Menger sponge
 
     public Main() {
-        setTitle("Rotating cube");
+        setTitle("Menger Sponge");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        b = new Box(0, 0, 0, 200);
 
         Timer timer = new Timer(16, new ActionListener() {
             @Override
@@ -21,6 +24,13 @@ public class Main extends JFrame {
         });
         timer.start();
 
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                level++; // Increase the level on each click
+                updateMengerSponge();
+                repaint();
+            }
+        });
     }
 
     @Override
@@ -33,8 +43,8 @@ public class Main extends JFrame {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLACK);
 
-        double [][] cubeVertices = b.getCubeVertices();
-        int [][] cubeEdges = b.getCubeEdges();
+        double[][] cubeVertices = b.getCubeVertices();
+        int[][] cubeEdges = b.getCubeEdges();
 
         for (int[] edge : cubeEdges) {
             int x1 = (int) (centerX + cubeVertices[edge[0]][0] * 50);
@@ -44,6 +54,10 @@ public class Main extends JFrame {
 
             g2d.drawLine(x1, y1, x2, y2);
         }
+    }
+
+    public void updateMengerSponge() {
+        b.generateMengerSponge(level);
     }
 
     public static void main(String[] args) {
